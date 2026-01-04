@@ -21,6 +21,7 @@ import {
   Baby
 } from 'lucide-react';
 
+import bgImg from './assets/spiritual-puja-bg2.jpg';
 // IMPORT SERVER_P FROM .ENV FILE
 // import {SERVER_IP} from ';
 
@@ -580,9 +581,10 @@ const Hero = ({ onBookNow }) => (
 
       {/* Right Image (Desktop Only) */}
       <div className="hidden md:block relative">
-        <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition duration-500">
+        {/* <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition duration-500"> */}
+        <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform">
              <img 
-              src="https://images.unsplash.com/photo-1605902711622-cfb43c4437b5?q=80&w=1000&auto=format&fit=crop" 
+              src={bgImg} 
               alt="Divine Puja Setting" 
               className="w-full h-auto object-cover max-h-[500px]"
              />
