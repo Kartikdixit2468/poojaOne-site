@@ -21,7 +21,13 @@ import {
   Baby
 } from 'lucide-react';
 
+// IMPORT SERVER_P FROM .ENV FILE
+// import {SERVER_IP} from ';
+
 // --- Assets & Constants ---
+
+const SERVER_IP = import.meta.env.VITE_SERVER_IP || 'http://localhost:3000';
+console.log("Using SERVER_IP:", SERVER_IP);
 
 // Expanded Database of Poojas
 const ALL_POOJAS = [
@@ -279,28 +285,49 @@ const BookingModal = ({ isOpen, onClose, preselectedService }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    console.log("Submitting booking:", formData);
+    try {
+      // POST request to the backend
+      const response = await fetch(`${SERVER_IP}/api/email/send-email/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      console.log("Server response:", response);
+      
+
+      if (response.ok) {
+        setIsSuccess(true);
+        // Reset after showing success message
+        setTimeout(() => {
+          setIsSuccess(false);
+          onClose();
+          setFormData({
+            name: '',
+            phone: '',
+            service: 'General Puja',
+            date: '',
+            locationType: 'manual',
+            address: ''
+          });
+        }, 3000);
+      } else {
+        console.error("Server responded with error", response.status);
+        alert("Booking failed. Please try again or contact support.");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Unable to connect to the server. Please check your internet connection.");
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-      // Reset after showing success message
-      setTimeout(() => {
-        setIsSuccess(false);
-        onClose();
-        setFormData({
-          name: '',
-          phone: '',
-          service: 'General Puja',
-          date: '',
-          locationType: 'manual',
-          address: ''
-        });
-      }, 3000);
-    }, 1500);
+    }
   };
 
   if (!isOpen) return null;
@@ -455,7 +482,7 @@ const Navbar = ({ onBookNow }) => {
           <div className="bg-orange-600 text-white p-2 rounded-lg">
             <Flame size={24} fill="currentColor" />
           </div>
-          <span className={`text-2xl font-serif font-bold ${isScrolled ? 'text-gray-900' : 'text-gray-900 md:text-white'}`}>
+          <span className="text-2xl font-serif font-bold text-gray-900">
             Pooja<span className="text-orange-600">One</span>.in
           </span>
         </div>
@@ -466,7 +493,7 @@ const Navbar = ({ onBookNow }) => {
             <a 
               key={item} 
               href={`#${item.toLowerCase()}`}
-              className={`font-medium hover:text-orange-500 transition ${isScrolled ? 'text-gray-700' : 'text-white/90'}`}
+              className="font-medium text-gray-700 hover:text-orange-600 transition"
             >
               {item}
             </a>
@@ -484,7 +511,7 @@ const Navbar = ({ onBookNow }) => {
           className="md:hidden text-gray-800"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} className={isScrolled ? 'text-gray-900' : 'text-gray-900 md:text-white'} />}
+          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} className="text-gray-900" />}
         </button>
       </div>
 
@@ -517,30 +544,25 @@ const Navbar = ({ onBookNow }) => {
 };
 
 const Hero = ({ onBookNow }) => (
-  <section id="home" className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-    {/* Background with Overlay */}
-    <div className="absolute inset-0 z-0">
-      <img 
-        src="https://images.unsplash.com/photo-1604869515882-4d10a010d8a5?q=80&w=2000&auto=format&fit=crop" 
-        alt="Spiritual Puja Background" 
-        className="w-full h-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-50/95 via-orange-50/80 to-transparent md:to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/50 md:to-transparent"></div>
-    </div>
+  <section id="home" className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-[#FFF8F0]">
+    {/* Decorative Background Elements (Soft Gradients) */}
+    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-orange-100 rounded-full blur-3xl opacity-50"></div>
+    <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-yellow-100 rounded-full blur-3xl opacity-50"></div>
 
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="max-w-2xl text-center md:text-left">
-        <div className="inline-block bg-orange-100 text-orange-800 px-4 py-1 rounded-full text-sm font-bold mb-6 animate-fade-in">
+    <div className="container mx-auto px-4 relative z-10 grid md:grid-cols-2 gap-12 items-center">
+      {/* Left Content */}
+      <div className="text-center md:text-left">
+        <div className="inline-block bg-orange-100 text-orange-800 px-4 py-1 rounded-full text-sm font-bold mb-6 animate-fade-in border border-orange-200">
           ★ #1 Trusted Online Acharya Service
         </div>
-        <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6 text-gray-900 md:text-white drop-shadow-md">
+        <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6 text-gray-900 drop-shadow-sm">
           Bring Divine Blessings <br/>
-          <span className="text-orange-600 md:text-orange-400">To Your Doorstep</span>
+          <span className="text-orange-600">To Your Doorstep</span>
         </h1>
-        <p className="text-lg md:text-xl text-gray-700 md:text-gray-200 mb-8 leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed max-w-lg mx-auto md:mx-0">
           Book experienced Vedic Acharyas for Pujas, Havans, and Sanskars performed at your home. Authentic rituals, hassle-free booking.
         </p>
-        <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <button 
             onClick={() => onBookNow()}
             className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1 flex items-center justify-center"
@@ -549,11 +571,24 @@ const Hero = ({ onBookNow }) => (
           </button>
           <a 
             href="#services"
-            className="bg-white/90 backdrop-blur hover:bg-white text-gray-900 px-8 py-4 rounded-lg font-bold text-lg shadow-lg transition flex items-center justify-center border border-gray-200"
+            className="bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg font-bold text-lg shadow-md hover:shadow-lg transition flex items-center justify-center border border-gray-200"
           >
             View Services
           </a>
         </div>
+      </div>
+
+      {/* Right Image (Desktop Only) */}
+      <div className="hidden md:block relative">
+        <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white transform rotate-2 hover:rotate-0 transition duration-500">
+             <img 
+              src="https://images.unsplash.com/photo-1605902711622-cfb43c4437b5?q=80&w=1000&auto=format&fit=crop" 
+              alt="Divine Puja Setting" 
+              className="w-full h-auto object-cover max-h-[500px]"
+             />
+        </div>
+        {/* Decorative border behind image */}
+        <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-orange-200 rounded-3xl z-0"></div>
       </div>
     </div>
   </section>
