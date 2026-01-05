@@ -28,6 +28,8 @@ app.post('/api/email/send-email/', async (req, res) => {
     try {
         console.log("Setting up transporter");
         // Create a transporter object using SMTP transport
+        console.log("Environment MAIL:", process.env.MAIL);
+        console.log("Environment MAIL_APP_PASSWORD:", process.env.MAIL_APP_PASSWORD);
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
