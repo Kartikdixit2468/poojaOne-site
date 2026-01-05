@@ -1,26 +1,16 @@
-
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 
-
 const App = () => {
   return (
     <BrowserRouter>
-
-    <Routes>  
-     <Route path="/" element={<Home />} /> 
-     <Route path="/confirm-booking" 
-     element=
-     {
-      <Home />
-    }
-      /> 
-    </Routes>
-
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/confirm-booking" element={<Home showBookingModal={true} />} />
+      </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
-

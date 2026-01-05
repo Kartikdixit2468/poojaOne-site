@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Phone, Calendar, MapPin, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const PROD_URL= import.meta.env.VITE_PROD_URL;
+const PROD_URL = import.meta.env.VITE_PROD_URL;
 console.log("BookingModal using PROD_URL:", PROD_URL);
 
 const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -50,14 +52,14 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
     setIsSubmitting(true);
     
     console.log("Submitting booking:", JSON.stringify(formData));
+    
     try {
-      // POST request to the backend
       const response = await fetch(`${PROD_URL}/api/email/send-email/`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const responseData = await response.json();
@@ -65,18 +67,19 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
 
       if (responseData.success) {
         setIsSuccess(true);
-        // Reset after showing success message
+        // Reset after showing success message and redirect to home
         setTimeout(() => {
           setIsSuccess(false);
           onClose();
           setFormData({
-            name: '',
-            phone: '',
-            service: 'General Puja',
-            date: '',
-            locationType: 'manual',
-            address: ''
+            name: "",
+            phone: "",
+            service: "General Puja",
+            date: "",
+            locationType: "detect",
+            address: "",
           });
+          navigate('/');
         }, 3000);
       } else {
         console.error("Server responded with error", response.status);
@@ -84,7 +87,9 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
       }
     } catch (error) {
       console.error("Network error:", error);
-      alert("Unable to connect to the server. Please check your internet connection.");
+      alert(
+        "Unable to connect to the server. Please check your internet connection."
+      );
     } finally {
       setIsSubmitting(false);
     }

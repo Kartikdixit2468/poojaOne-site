@@ -20,6 +20,7 @@ import {
   Moon,
   BookOpen
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import bgImg from '../assets/spiritual-puja-bg2.jpg';
 import Navbar from '../components/Navbar.jsx';
 import Hero from '../components/Hero.jsx';
@@ -133,8 +134,8 @@ const REVIEWS = [
 ];
 
 // --- Components ---
-const Home = () => {
-  const [isBookingModalOpen, setBookingModalOpen] = useState(false);
+const Home = ({ showBookingModal = false }) => {
+  const [isBookingModalOpen, setBookingModalOpen] = useState(showBookingModal);
   const [isExplorerOpen, setExplorerOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
 
