@@ -132,13 +132,6 @@ const REVIEWS = [
   }
 ];
 
-
-// --- Assets & Constants ---
-const SERVER_IP = import.meta.env.VITE_SERVER_IP;
-const PROD_URL = import.meta.env.VITE_PROD_URL;
-console.log("Using PROD_URL:", PROD_URL);
-console.log("Using SERVER_IP:", SERVER_IP);
-
 // --- Components ---
 const Home = () => {
   const [isBookingModalOpen, setBookingModalOpen] = useState(false);
