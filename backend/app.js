@@ -30,20 +30,35 @@ app.post('/api/email/send-email/', async (req, res) => {
         // Create a transporter object using SMTP transport
         console.log("Environment MAIL:", process.env.MAIL);
         console.log("Environment MAIL_APP_PASSWORD:", process.env.MAIL_APP_PASSWORD);
+        // const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         user: process.env.MAIL,
+        //         pass: process.env.MAIL_APP_PASSWORD,
+        //     },
+        // });
+
+
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // true only for 465
             auth: {
                 user: process.env.MAIL,
                 pass: process.env.MAIL_APP_PASSWORD,
             },
+            tls: {
+                rejectUnauthorized: false,
+            },
         });
+
         console.log("Transporter set up successfully");
         // Define email options
         const mailOptions = {
             from: process.env.MAIL,
             to: "Kartikdixit2107@gmail.com",
             subject: 'New Message',
-            text: `${message}`
+            text: JSON.stringify(message),
         };
 
         console.log("Mail options defined:", mailOptions);
