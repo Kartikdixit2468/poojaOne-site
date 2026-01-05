@@ -3,8 +3,7 @@ import { X, User, Phone, Calendar, MapPin, CheckCircle } from 'lucide-react';
 
 const PROD_URL= import.meta.env.VITE_PROD_URL;
 
-
-const BookingModal = ({ isOpen, onClose, preselectedService }) => {
+const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -49,7 +48,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService }) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    console.log("Submitting booking:", formData);
+    console.log("Submitting booking:", JSON.stringify(formData));
     try {
       // POST request to the backend
       const response = await fetch(`${PROD_URL}/api/email/send-email/`, {
@@ -60,10 +59,10 @@ const BookingModal = ({ isOpen, onClose, preselectedService }) => {
         body: JSON.stringify(formData)
       });
 
-      console.log("Server response:", response);
-      
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
 
-      if (response.success) {
+      if (responseData.success) {
         setIsSuccess(true);
         // Reset after showing success message
         setTimeout(() => {
