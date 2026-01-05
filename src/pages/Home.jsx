@@ -377,6 +377,7 @@ const Home = () => {
         isOpen={isBookingModalOpen} 
         onClose={() => setBookingModalOpen(false)} 
         preselectedService={selectedService}
+        ALL_POOJAS={ALL_POOJAS}
       />
 
       <ServiceExplorerModal

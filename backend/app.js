@@ -6,6 +6,14 @@ const cors = require('cors');
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+//   origin: "http://localhost:5173",
+    origin: "*",
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 const port = 3000;
 app.get('/', (req, res) => {
   res.send('It worked!');

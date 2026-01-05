@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, User, Phone, Calendar, MapPin, CheckCircle } from 'lucide-react';
 
 const PROD_URL= import.meta.env.VITE_PROD_URL;
+console.log("BookingModal using PROD_URL:", PROD_URL);
 
 const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
   const [formData, setFormData] = useState({
