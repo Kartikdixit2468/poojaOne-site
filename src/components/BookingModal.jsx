@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Phone, Calendar, MapPin, CheckCircle } from 'lucide-react';
+import { X, User, Phone, Calendar, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const PROD_URL = import.meta.env.VITE_PROD_URL;
@@ -16,7 +16,6 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
     address: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   // Update service if prop changes
   useEffect(() => {
@@ -53,46 +52,8 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
     
     console.log("Submitting booking:", JSON.stringify(formData));
     
-    try {
-      const response = await fetch(`${PROD_URL}/api/email/send-email/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const responseData = await response.json();
-      console.log("Server response:", responseData);
-
-      if (responseData.success) {
-        setIsSuccess(true);
-        // Reset after showing success message and redirect to home
-        setTimeout(() => {
-          setIsSuccess(false);
-          onClose();
-          setFormData({
-            name: "",
-            phone: "",
-            service: "General Puja",
-            date: "",
-            locationType: "detect",
-            address: "",
-          });
-          navigate('/');
-        }, 3000);
-      } else {
-        console.error("Server responded with error", response.status);
-        alert("Booking failed. Please try again or contact support.");
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-      alert(
-        "Unable to connect to the server. Please check your internet connection."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Navigate to confirm booking page with form data
+    navigate('/confirm-booking', { state: { formData } });
   };
 
   if (!isOpen) return null;
@@ -111,16 +72,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
 
         {/* Body */}
         <div className="p-6 md:p-8">
-          {isSuccess ? (
-            <div className="text-center py-10">
-              <div className="mx-auto w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle size={40} />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Booking Confirmed!</h3>
-              <p className="text-gray-600">Our Acharya will contact you shortly to confirm the details.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
               
               {/* Service Selection */}
               <div>
@@ -222,7 +174,6 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
                 {isSubmitting ? 'Scheduling...' : 'Confirm Booking'}
               </button>
             </form>
-          )}
         </div>
       </div>
     </div>

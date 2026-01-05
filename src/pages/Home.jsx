@@ -134,8 +134,8 @@ const REVIEWS = [
 ];
 
 // --- Components ---
-const Home = ({ showBookingModal = false }) => {
-  const [isBookingModalOpen, setBookingModalOpen] = useState(showBookingModal);
+const Home = () => {
+  const [isBookingModalOpen, setBookingModalOpen] = useState(false);
   const [isExplorerOpen, setExplorerOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
 
