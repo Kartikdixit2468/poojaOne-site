@@ -26,6 +26,7 @@ app.post('/api/email/send-email/', async (req, res) => {
     console.log("Email message content:", message);
     
     try {
+        console.log("Setting up transporter");
         // Create a transporter object using SMTP transport
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -34,7 +35,7 @@ app.post('/api/email/send-email/', async (req, res) => {
                 pass: process.env.MAIL_APP_PASSWORD,
             },
         });
-
+        console.log("Transporter set up successfully");
         // Define email options
         const mailOptions = {
             from: process.env.MAIL,
@@ -43,9 +44,12 @@ app.post('/api/email/send-email/', async (req, res) => {
             text: `${message}`
         };
 
+        console.log("Mail options defined:", mailOptions);
+        console.log("Sending email...");
+
         // Send the email
         await transporter.sendMail(mailOptions);
-
+        console.log("Email sent successfully");
         res.status(200).json({ success: true, message: 'Email sent successfully' });
     } catch (error) {
         console.error('Email sending error:', error);
