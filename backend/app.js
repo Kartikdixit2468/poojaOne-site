@@ -6,7 +6,8 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+//   origin: "http://localhost:5173",
+    origin: "*",
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -17,9 +18,10 @@ app.get('/', (req, res) => {
   res.send('It worked!');
 }
 );
+
 app.post('/api/email/send-email/', async (req, res) => {
     console.log("Email API called");
-    const { message } = req.query;
+    const message = req.query;
     
     try {
         // Create a transporter object using SMTP transport
@@ -34,7 +36,7 @@ app.post('/api/email/send-email/', async (req, res) => {
         // Define email options
         const mailOptions = {
             from: process.env.MAIL,
-            to: process.env.MAIL,
+            to: "Kartikdixit2107@gmail.com",
             subject: 'New Message',
             text: `${message}`
         };
