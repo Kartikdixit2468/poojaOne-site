@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const app = express();
 
+app.use(express.json());
 app.use(cors({
 //   origin: "http://localhost:5173",
     origin: "*",
@@ -21,7 +22,8 @@ app.get('/', (req, res) => {
 
 app.post('/api/email/send-email/', async (req, res) => {
     console.log("Email API called");
-    const message = req.query;
+    const message = req.body;
+    console.log("Email message content:", message);
     
     try {
         // Create a transporter object using SMTP transport
