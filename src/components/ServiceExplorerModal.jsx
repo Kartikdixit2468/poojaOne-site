@@ -1,0 +1,115 @@
+import React, { useState } from 'react';
+import { X, Search, Filter } from 'lucide-react';
+
+
+const ServiceExplorerModal = ({ isOpen, onClose, onBookService }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  if (!isOpen) return null;
+
+  const categories = ['All', ...new Set(ALL_POOJAS.map(p => p.category))];
+
+  const filteredPoojas = ALL_POOJAS.filter(pooja => {
+    const matchesSearch = pooja.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || pooja.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+      <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col overflow-hidden animate-fade-in-up relative">
+        {/* Subtle decorative elements */}
+        <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-brand-soft to-transparent rounded-full blur-2xl opacity-20"></div>
+        
+        {/* Header */}
+        <div className="bg-surface border-b border-border p-6 flex-shrink-0">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="text-2xl font-serif font-bold text-text">Explore Divine Services</h2>
+              <p className="text-text-muted text-sm">Find the perfect ritual for your needs</p>
+            </div>
+            <button onClick={onClose} className="bg-brand-soft hover:bg-border p-2 rounded-full transition">
+              <X size={24} className="text-text-muted" />
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-3 text-muted" size={20} />
+              <input 
+                type="text" 
+                placeholder="Search for a Puja, Havan or Sanskar..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 p-3 bg-section border border-border rounded-xl focus:ring-2 focus:ring-brand outline-none"
+              />
+            </div>
+            
+            {/* Categories */}
+            <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedCategory === cat 
+                      ? 'bg-gradient-to-br from-brand to-brand-dark text-white shadow-md' 
+                      : 'bg-surface border border-border text-text-muted hover:bg-brand-soft hover:text-brand'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="flex-grow overflow-y-auto p-6 bg-section">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPoojas.length > 0 ? (
+              filteredPoojas.map((pooja) => (
+                <div key={pooja.id} className="bg-surface rounded-xl p-6 shadow-sm hover:shadow-lg transition border border-border flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-brand-soft rounded-lg text-brand">
+                      {pooja.icon}
+                    </div>
+                    <span className="text-xs font-semibold px-2 py-1 bg-section text-text-muted rounded-full">
+                      {pooja.category}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-bold text-text mb-2">{pooja.title}</h3>
+                  <p className="text-text-muted text-sm mb-4 flex-grow">{pooja.description}</p>
+                  <div className="pt-4 border-t border-border flex items-center justify-between">
+                    <span className="font-bold text-brand text-lg">{pooja.price}</span>
+                    <button 
+                      onClick={() => onBookService(pooja.title)}
+                      className="bg-footer hover:bg-gradient-to-b hover:from-brand hover:to-brand-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300"
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 text-text-muted">
+                <Filter size={48} className="mx-auto mb-4 opacity-20" />
+                <p className="text-lg">No services found matching your search.</p>
+                <button 
+                  onClick={() => {setSearchTerm(''); setSelectedCategory('All');}}
+                  className="mt-4 text-brand font-medium hover:underline"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ServiceExplorerModal;
