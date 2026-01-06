@@ -621,6 +621,7 @@ const Home = () => {
         isOpen={isExplorerOpen}
         onClose={() => setExplorerOpen(false)}
         onBookService={openBooking}
+        ALL_POOJAS={ALL_POOJAS}
       />
     </div>
   );
