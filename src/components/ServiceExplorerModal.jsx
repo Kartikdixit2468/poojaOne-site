@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { X, Search, Filter } from 'lucide-react';
 
 
-const ServiceExplorerModal = ({ isOpen, onClose, onBookService }) => {
+const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+
+  console.log('ServiceExplorerModal rendered');
+  console.log('isOpen:', isOpen);
+  console.log('searchTerm:', searchTerm);
 
   if (!isOpen) return null;
 
