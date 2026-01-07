@@ -75,25 +75,91 @@ const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) =>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPoojas.length > 0 ? (
               filteredPoojas.map((pooja) => (
-                <div key={pooja.id} className="bg-surface rounded-xl p-6 shadow-sm hover:shadow-lg transition border border-border flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 bg-brand-soft rounded-lg text-brand">
-                      {pooja.icon}
+                <div key={pooja.id} className="h-full group relative">
+                  {/* Inner wrapper - all hover animations applied here */}
+                  <div
+                    className="bg-surface rounded-2xl overflow-hidden shadow-sm border border-border h-full flex flex-col relative transition-all duration-300 ease-out"
+                    style={{
+                      transform: "translateY(0) scale(1)",
+                      boxShadow:
+                        "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(-4px) scale(1.03)";
+                      e.currentTarget.style.boxShadow =
+                        "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(208, 106, 31, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow =
+                        "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)";
+                      e.currentTarget.style.borderColor = "rgb(240 226 214)";
+                    }}
+                  >
+                    {/* Subtle gradient glow on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-soft/0 via-brand-soft/0 to-brand-soft/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"></div>
+                    {/* Shimmer effect on hover */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"></div>
+
+                    {/* Image Section */}
+                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-brand-soft to-brand-soft/50">
+                      <img
+                        src={pooja.image}
+                        alt={pooja.title}
+                        className="w-full h-full object-cover transition-all duration-700 ease-out"
+                        style={{ transform: "scale(1) rotate(0deg)" }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.transform =
+                            "scale(1.1) rotate(1deg)")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.transform =
+                            "scale(1) rotate(0deg)")
+                        }
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      {/* Category Badge */}
+                      <div
+                        className="absolute top-3 right-3 transform transition-transform duration-300 ease-out"
+                        style={{ transform: "scale(1)" }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.transform = "scale(1.1)")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.transform = "scale(1)")
+                        }
+                      >
+                        <span className="bg-surface/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-brand shadow-lg">
+                          {pooja.category}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-xs font-semibold px-2 py-1 bg-section text-text-muted rounded-full">
-                      {pooja.category}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-text mb-2">{pooja.title}</h3>
-                  <p className="text-text-muted text-sm mb-4 flex-grow">{pooja.description}</p>
-                  <div className="pt-4 border-t border-border flex items-center justify-between">
-                    <span className="font-bold text-brand text-lg">{pooja.price}</span>
-                    <button 
-                      onClick={() => onBookService(pooja.title)}
-                      className="bg-footer hover:bg-gradient-to-b hover:from-brand hover:to-brand-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300"
-                    >
-                      Book Now
-                    </button>
+                    
+                    {/* Content Section */}
+                    <div className="p-5 lg:p-6 flex flex-col flex-grow">
+                      <h3 className="text-lg lg:text-xl font-bold mb-2 text-text group-hover:text-brand transition-all duration-300 group-hover:tracking-wide">{pooja.title}</h3>
+                      <p className="text-text-muted text-sm mb-4 leading-relaxed flex-grow line-clamp-2 group-hover:text-text transition-colors duration-300">
+                        {pooja.description}
+                      </p>
+                      <div className="flex items-center justify-between mt-auto pt-4 border-t border-border group-hover:border-brand/30 transition-colors duration-300">
+                        <span className="text-brand font-bold text-lg inline-block transition-transform duration-300 ease-out"
+                          style={{ transform: 'scale(1)' }}
+                          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        >{pooja.price}</span>
+                        <button
+                          onClick={() => onBookService(pooja.title)}
+                          className="bg-footer hover:bg-gradient-to-b hover:from-brand hover:to-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+                        >
+                          Book Now
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))
