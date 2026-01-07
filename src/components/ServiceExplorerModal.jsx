@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Search, Filter } from 'lucide-react';
+import { X, Search, Filter, Flame, BookOpen, Heart, Loader } from 'lucide-react';
 
 
 const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) => {
@@ -13,6 +13,27 @@ const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) =>
   if (!isOpen) return null;
 
   const categories = ['All', ...new Set(ALL_POOJAS.map(p => p.category))];
+  
+  // Category name mapping
+  const categoryDisplayNames = {
+    'Dosha Nivaran': 'Dosha Shanti'
+  };
+  
+  // Get category icon
+  const getCategoryIcon = (category) => {
+    switch(category) {
+      case 'Puja':
+        return <Flame size={14} className="mr-1.5" />;
+      case 'Sanskar':
+        return <Heart size={14} className="mr-1.5" />;
+      case 'Havan':
+        return <Flame size={14} className="mr-1.5" />;
+      case 'Dosha Nivaran':
+        return <Loader size={14} className="mr-1.5" />;
+      default:
+        return null;
+    }
+  };
 
   const filteredPoojas = ALL_POOJAS.filter(pooja => {
     const matchesSearch = pooja.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -53,21 +74,27 @@ const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) =>
             
             {/* Categories */}
             <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                    selectedCategory === cat 
-                      ? 'bg-gradient-to-br from-brand to-brand-dark text-white shadow-md' 
-                      : 'bg-surface border border-border text-text-muted hover:bg-brand-soft hover:text-brand'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {categories.map(cat => {
+                const displayName = categoryDisplayNames[cat] || cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center ${
+                      selectedCategory === cat 
+                        ? 'bg-gradient-to-br from-brand to-brand-dark text-white shadow-md' 
+                        : 'bg-surface border border-border text-text-muted hover:bg-brand-soft hover:text-brand'
+                    }`}
+                  >
+                    {cat !== 'All' && getCategoryIcon(cat)}
+                    {displayName}
+                  </button>
+                );
+              })}
             </div>
           </div>
+          
+          
         </div>
 
         {/* Scrollable Content */}
@@ -154,9 +181,9 @@ const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) =>
                         >{pooja.price}</span>
                         <button
                           onClick={() => onBookService(pooja.title)}
-                          className="bg-footer hover:bg-gradient-to-b hover:from-brand hover:to-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+                          className="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center transition-all duration-300 shadow-md hover:shadow-xl"
                         >
-                          Book Now
+                          Book Pooja
                         </button>
                       </div>
                     </div>
