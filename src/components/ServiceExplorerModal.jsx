@@ -164,9 +164,9 @@ const ServiceExplorerModal = ({ isOpen, onClose, onBookService, ALL_POOJAS }) =>
                         >{pooja.price}</span>
                         <button
                           onClick={() => onBookService(pooja.title)}
-                          className="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center transition-all duration-300 shadow-md hover:shadow-xl"
+                          className="bg-footer hover:bg-gradient-to-b hover:from-brand hover:to-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
                         >
-                          Book Pooja
+                          Book Pooja <span className="ml-1 inline-block group-hover:translate-x-1 transition-transform duration-300">›</span>
                         </button>
                       </div>
                     </div>
