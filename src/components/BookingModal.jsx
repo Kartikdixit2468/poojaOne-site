@@ -172,7 +172,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-soft rounded-full blur-2xl opacity-30 -mr-16 -mt-16"></div>
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-brand via-brand to-brand-dark p-6 flex-shrink-0">
+        <div className="bg-gradient-to-r from-brand via-brand to-brand-dark p-6 flex-shrink-0 relative z-10">
           <div className="flex justify-between items-start">
             <div>
               <h2 className="text-2xl font-serif font-bold text-white">Book a Pandit for Your Puja</h2>
@@ -181,7 +181,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
             <button 
               type="button"
               onClick={onClose} 
-              className="hover:bg-brand-dark p-1 rounded-full transition text-white flex-shrink-0"
+              className="hover:bg-brand-dark p-2 rounded-full transition text-white flex-shrink-0 relative z-20 cursor-pointer"
             >
               <X size={24} />
             </button>
