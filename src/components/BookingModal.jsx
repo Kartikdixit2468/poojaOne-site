@@ -160,8 +160,14 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up relative max-h-[90vh] flex flex-col">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-surface rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up relative max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Decorative corner patterns */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-soft rounded-full blur-2xl opacity-30 -mr-16 -mt-16"></div>
         
@@ -173,6 +179,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService, ALL_POOJAS }) => {
               <p className="text-brand-soft text-sm mt-1">Verified pandits • Best prices • Doorstep service</p>
             </div>
             <button 
+              type="button"
               onClick={onClose} 
               className="hover:bg-brand-dark p-1 rounded-full transition text-white flex-shrink-0"
             >
