@@ -19,6 +19,11 @@ app.get("/", (req, res) => {
   res.send("It worked!");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", time: new Date() });
+});
+
+
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
